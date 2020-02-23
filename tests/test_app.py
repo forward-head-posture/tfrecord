@@ -1,6 +1,6 @@
 import time
 import responses
-from starter.app import main
+from tfrecord.app import main
 
 
 @responses.activate

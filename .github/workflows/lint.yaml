@@ -12,4 +12,4 @@ jobs:
         with:
           python-version: "3.6"
       - run: pip install -e ".[test]"
-      - run: pylint starter tests setup.py
+      - run: pylint tfrecord tests setup.py
