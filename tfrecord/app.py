@@ -61,14 +61,15 @@ def main(
     src="s3://pi-camera/forward-head-posture",
     dst="s3://tfrecord/forward-head-posture",
 ):
-    """
-    shuffle images
-    shards = shard images
-    for shard in shards
-    make tfrecord
-    upload to storage
-    """
-    for directory in tf.io.gfile.listdir(src):
+    src_dirs = sorted(tf.io.gfile.listdir(src))
+    print(src_dirs)
+    src_dirs = src_dirs[:-1]  # skip latest date
+
+    dst_dirs = tf.io.gfile.listdir(dst)
+    dirs = [x for x in src_dirs if x not in dst_dirs]
+
+    for directory in dirs:
+        print(directory)
         image_paths_chunks = get_image_paths_chunks(src, directory)
         create_tf_record_shard(dst, directory, image_paths_chunks)
 
