@@ -12,12 +12,12 @@ def get_long_description():
 
 
 setup(
-    name="python-starter",
+    name="tfrecord",
     version="0.1.0",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=("tests",)),
-    entry_points={"console_scripts": ["starter=starter.cli:cli"]},
+    entry_points={"console_scripts": ["tfrecord=tfrecord.cli:cli"]},
     install_requires=DEPENDENCIES,
     test_require=TEST_DEPENDENCIES,
     extras_require={"test": TEST_DEPENDENCIES},

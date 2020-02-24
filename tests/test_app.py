@@ -84,11 +84,15 @@ def test_create_tf_example(mocker):
     mocker.patch("tensorflow.io.gfile.GFile").return_value = io.BytesIO(
         b"test-bytes"
     )
-    filepath = "s3://pi-camera/forward-head-posture/2020-02-24/00/1582505488184000000_1582505488196884480_pi-camera-3_0.0334572092477628.jpg"
-    tf_example = create_tf_example(filepath)
-    serialized = tf_example.SerializeToString()
-    expected = b"\n\xb9\x01\n\x1f\n\rimage/encoded\x12\x0e\n\x0c\n\ntest-bytes\n`\n\x0eimage/filename\x12N\nL\nJ1582505488184000000_1582505488196884480_pi-camera-3_0.0334572092477628.jpg\n\x18\n\x0cimage/format\x12\x08\n\x06\n\x04jpeg\n\x1a\n\x0eimage/distance\x12\x08\x12\x06\n\x04m\n\t="
-    assert expected == serialized
+    distance = 0.0032342343244
+    mocker.patch(
+        "tfrecord.dataset_util.float_list_feature"
+    ).return_value = tfrecord.dataset_util.float_list_feature([distance])
+    filepath = "s3://pi-camera/forward-head-posture/2020-02-24/00/1582505488184000000_1582505488196884480_pi-camera-3_{}.jpg".format(
+        distance
+    )
+    create_tf_example(filepath)
+    tfrecord.dataset_util.float_list_feature.assert_called_with([distance])
 
 
 TFRECORD_SAVE_PATH = "/tmp/train-01.tfrecord"
