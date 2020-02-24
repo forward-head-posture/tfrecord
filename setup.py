@@ -1,7 +1,7 @@
 from os import path
 from setuptools import setup, find_packages
 
-DEPENDENCIES = ["fire", "requests"]
+DEPENDENCIES = ["tensorflow", "fire"]
 TEST_DEPENDENCIES = ["pylint", "pytest", "pytest-mock", "responses"]
 
 
