@@ -14,19 +14,15 @@ from tfrecord.app import (
 
 
 def test_main(mocker):
-    directory = "2020-02-24"
-    mocker.patch("tensorflow.io.gfile.listdir").return_value = [directory]
-    image_paths_chunks = [
-        [
-            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582505488184000000_1582505488196884480_pi-camera-3_0.0334572092477628.jpg"
-        ],
-        [
-            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582504169424000000_1582504169467478784_pi-camera-1_0.008780005006323754.jpg"
-        ],
+    directory = "2020-02-28"
+    mocker.patch("tensorflow.io.gfile.listdir").side_effect = [
+        [directory, "2020-02-25", "2020-02-26", "2020-02-27", "2020-02-29"],
+        ["2020-02-25"],
     ]
-    mocker.patch("tensorflow.io.gfile.glob").return_value = image_paths_chunks
+    mocker.patch("tfrecord.app.get_image_paths_chunks")
     mocker.patch("tfrecord.app.create_tf_record_shard")
     main()
+    assert tfrecord.app.create_tf_record_shard.call_count == 3
     assert tfrecord.app.create_tf_record_shard.call_args[0][1] == directory
 
 
