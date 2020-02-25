@@ -54,25 +54,19 @@ def test_create_tf_record_shard(mocker):
     directory = "2020-02-24"
     image_paths_chunks = [
         [
-            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582505488184000000_1582505488196884480_pi-camera-3_0.0334572092477628.jpg",
-            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582503996107000000_1582503996153114368_pi-camera-0_0.00456208523369156.jpg",
-        ],
-        [
-            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582504169424000000_1582504169467478784_pi-camera-1_0.008780005006323754.jpg",
-            "s3://pi-camera/forward-head-posture/2020-02-24/01/1582506958037000000_1582506958073802752_pi-camera-0_0.04352723969174874.jpg",
-        ],
-        [
-            "s3://pi-camera/forward-head-posture/2020-02-24/01/1582507198013000000_1582507198005175040_pi-camera-3_0.003301300849721578.jpg"
-        ],
+            "s3://pi-camera/forward-head-posture/2020-02-24/00/1582505488184000000_1582505488196884480_pi-camera-3_0.0334572092477628.jpg"
+        ]
+        for _ in range(10)
     ]
     create_tf_record_shard(dst, directory, image_paths_chunks)
     args_list = tf.io.gfile.copy.call_args_list
 
     for i in range(len(image_paths_chunks)):
+        prefix = "train" if i % 6 == 0 else "validation"
         assert args_list[i][0][
             1
-        ] == "s3://test/forward-head-posture/2020-02-24/2020-02-24-{}.tfrecord".format(
-            i
+        ] == "s3://test/forward-head-posture/2020-02-24/{}-2020-02-24-{}.tfrecord".format(
+            prefix, i
         )
 
 
