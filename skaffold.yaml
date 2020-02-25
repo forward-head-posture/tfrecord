@@ -1,0 +1,14 @@
+apiVersion: skaffold/v1
+kind: Config
+build:
+  artifacts:
+    - image: yoyota/python-starter
+deploy:
+  helm:
+    releases:
+      - name: python-starter
+        namespace: yoyota
+        chartPath: helm
+        setValueTemplates:
+          image.repository: "{{.IMAGE_NAME}}"
+          image.tag: "{{.DIGEST_HEX}}"

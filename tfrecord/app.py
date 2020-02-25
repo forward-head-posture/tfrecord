@@ -62,14 +62,14 @@ def main(
     dst="s3://tfrecord/forward-head-posture",
 ):
     src_dirs = sorted(tf.io.gfile.listdir(src))
-    print(src_dirs)
     src_dirs = src_dirs[:-1]  # skip latest date
 
     dst_dirs = tf.io.gfile.listdir(dst)
     dirs = [x for x in src_dirs if x not in dst_dirs]
+    print("target directory: ", dirs)
 
     for directory in dirs:
-        print(directory)
+        print("start: ", directory)
         image_paths_chunks = get_image_paths_chunks(src, directory)
         create_tf_record_shard(dst, directory, image_paths_chunks)
 
