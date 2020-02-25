@@ -5,6 +5,7 @@ on:
 
 jobs:
   test:
+    container: tensorflow/tensorflow:2.1.0-py3
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
