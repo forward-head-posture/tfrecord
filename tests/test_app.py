@@ -62,7 +62,7 @@ def test_create_tf_record_shard(mocker):
     args_list = tf.io.gfile.copy.call_args_list
 
     for i in range(len(image_paths_chunks)):
-        prefix = "train" if i % 6 == 0 else "validation"
+        prefix = "validation" if (i + 1) % 6 == 0 else "train"
         assert args_list[i][0][
             1
         ] == "s3://test/forward-head-posture/2020-02-24/{}-2020-02-24-{}.tfrecord".format(
