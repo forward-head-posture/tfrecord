@@ -2,11 +2,11 @@ apiVersion: skaffold/v1
 kind: Config
 build:
   artifacts:
-    - image: yoyota/python-starter
+    - image: yoyota/forward-head-posture-tfrecord
 deploy:
   helm:
     releases:
-      - name: python-starter
+      - name: forward-head-posture-tfrecord
         namespace: yoyota
         chartPath: helm
         setValueTemplates:
