@@ -46,11 +46,14 @@ def create_tf_record_shard(dst, directory, image_paths_chunks):
     tmp_dirpath = tempfile.mkdtemp()
 
     tmp_dsts = []
+
     for idx, chunk in enumerate(image_paths_chunks):
-        record_filename = "{}-{}.tfrecord".format(directory, idx)
+        prefix = "train" if idx % 6 == 0 else "validation"
+        record_filename = "{}-{}-{}.tfrecord".format(prefix, directory, idx)
         tmp_dst = os.path.join(tmp_dirpath, record_filename)
         create_tf_recrod(tmp_dst, chunk)
         tmp_dsts.append(tmp_dst)
+
     for record_path in tmp_dsts:
         record_filename = os.path.basename(record_path)
         copy_dst = os.path.join(dst, directory, record_filename)
